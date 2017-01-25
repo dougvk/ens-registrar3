@@ -1,15 +1,15 @@
-import {default as ENSAuctionLib} from '../lib/ens_registrar'
-let ENS = artifacts.require("./ENS.sol")
-let Registrar = artifacts.require("./Registrar.sol")
-let Deed = artifacts.require("./Deed.sol")
-let PublicResolver = artifacts.require("./PublicResolver.sol")
+/* global web3:true, assert:true, artifacts:true, contract:true */
+/* eslint-env mocha */
+
+import { default as ENSAuctionLib } from '../lib/ens_registrar'
+let Registrar = artifacts.require('./Registrar.sol')
 let Web3 = require('web3')
 
-contract("ENS integration", (accounts) => {
+contract('ENS integration', (accounts) => {
   let registrar
   let auctionRegistrar
 
-  before("set up auction registrar", () => {
+  before('set up auction registrar', () => {
     registrar = Registrar.deployed()
     auctionRegistrar = new ENSAuctionLib(
         new Web3.providers.HttpProvider('http://testrpc:8545'),
@@ -18,7 +18,7 @@ contract("ENS integration", (accounts) => {
     )
   })
 
-  it("demonstrates that the domain name isn't available", (done) => {
+  it('demonstrates that the domain name isn\'t available', (done) => {
     auctionRegistrar.available('test')
       .then((isAvailable) => {
         assert.isTrue(isAvailable)
@@ -26,7 +26,7 @@ contract("ENS integration", (accounts) => {
       })
   })
 
-  it("demonstrates that the domain name isn't up for auction", (done) => {
+  it('demonstrates that the domain name isn\'t up for auction', (done) => {
     auctionRegistrar.upForAuction('test')
       .then((isUpForAuction) => {
         assert.isFalse(isUpForAuction)
@@ -34,7 +34,7 @@ contract("ENS integration", (accounts) => {
       })
   })
 
-  it("can start an auction", (done) => {
+  it('can start an auction', (done) => {
     auctionRegistrar.startAuction('test')
       .then((started) => {
         assert.isTrue(started)
@@ -42,7 +42,7 @@ contract("ENS integration", (accounts) => {
       })
   })
 
-  it("can start a bid", (done) => {
+  it('can start a bid', (done) => {
     auctionRegistrar.createBid('test', accounts[0], '1.123', web3.sha3('secret'))
       .then(() => registrar.entries(web3.sha3('test')))
       .then((entry) => {
@@ -52,9 +52,9 @@ contract("ENS integration", (accounts) => {
       })
   })
 
-  it("can reveal a bid", function(done) {
+  it('can reveal a bid', (done) => {
     auctionRegistrar.createBid('test', accounts[0], '.123', web3.sha3('secret'))
-      .then(function(bidCreated) {
+      .then((bidCreated) => {
         assert.isTrue(bidCreated)
         return registrar.entries(web3.sha3('test'))
       })
