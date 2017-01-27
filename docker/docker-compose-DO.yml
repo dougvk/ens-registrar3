@@ -1,0 +1,37 @@
+version: '2'
+services:
+  testrpc:
+    image: dougvk/mydapp_testrpc
+    command: bash -c "testrpc -h 0.0.0.0"
+  truffle3:
+    image: dougvk/truffle3
+    command: bash
+    stdin_open: true
+    tty: true
+    volumes:
+      - truffle3_vol:/app
+  testnet:
+    image: dougvk/geth-testnet
+    stdin_open: true
+    tty: true
+    volumes:
+      - testnet_vol:/root
+    ports:
+      - "7002:8545"
+  devnet:
+    image: dougvk/geth-devnet
+    stdin_open: true
+    tty: true
+    volumes:
+      - devnet_vol:/tmp
+    ports:
+      - "7003:8545"
+  gethconsole:
+    image: kunstmaan/ethereum-geth-console
+    stdin_open: true
+    tty: true
+
+volumes:
+  truffle3_vol:
+  testnet_vol:
+  devnet_vol:
