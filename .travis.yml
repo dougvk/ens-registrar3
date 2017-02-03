@@ -17,10 +17,10 @@ before_install:
   - docker ps
 
 script:
-  - docker-compose -f docker/docker-compose.yml run truffle3 /bin/sh -c "npm install"
-  - docker-compose -f docker/docker-compose.yml run truffle3 /bin/sh -c "/root/truffle/cli.js compile"
-  - docker-compose -f docker/docker-compose.yml run truffle3 /bin/sh -c "/root/truffle/cli.js migrate"
-  - docker-compose -f docker/docker-compose.yml run truffle3 /bin/sh -c "/root/truffle/cli.js test"
+  - docker-compose -f docker/docker-compose.yml run truffle3_ens /bin/sh -c "npm install"
+  - docker-compose -f docker/docker-compose.yml run truffle3_ens /bin/sh -c "/root/truffle/cli.js compile"
+  - docker-compose -f docker/docker-compose.yml run truffle3_ens /bin/sh -c "/root/truffle/cli.js migrate"
+  - docker-compose -f docker/docker-compose.yml run truffle3_ens /bin/sh -c "/root/truffle/cli.js test"
 
   # if you want to migrate and test on a different network, here's the command you'd run
   #- docker-compose -f docker/docker-compose.yml run truffle3 /bin/sh -c "/root/truffle/cli.js test --network ropsten"
