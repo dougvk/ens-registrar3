@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "CLI for ENS deployment",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "ens": "babel-node ./bin/ensa.js"
   },
   "author": "Douglas von Kohorn",
   "license": "MIT",
