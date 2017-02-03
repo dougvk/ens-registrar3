@@ -44,3 +44,5 @@ Options:
 
 Missing required arguments: account, name, registrar
 ```
+
+## Linting your app is easy -- just run `npm run -s lint`!
