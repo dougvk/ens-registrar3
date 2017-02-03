@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "CLI for ENS deployment",
   "scripts": {
-    "ens": "babel-node ./bin/ensa.js"
+    "ens": "babel-node ./bin/ensa.js",
+    "lint": "eslint ./"
   },
   "author": "Douglas von Kohorn",
   "license": "MIT",
