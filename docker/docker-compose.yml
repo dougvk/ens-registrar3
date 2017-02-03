@@ -3,18 +3,18 @@ services:
   testrpc:
     image: dougvk/mydapp_testrpc
     command: bash -c "testrpc -h 0.0.0.0"
-  truffle3:
+  truffle3_ens:
     image: dougvk/truffle3
     command: bash
     stdin_open: true
     tty: true
     volumes_from:
-      - truffle3_vol
-  truffle3_vol:
+      - truffle3_ens_vol
+  truffle3_ens_vol:
     image: busybox
-    container_name: truffle_vol
+    container_name: truffle_ens_vol
     volumes:
       - ../:/app
 
 volumes:
-  truffle3_vol:
+  truffle3_ens_vol:

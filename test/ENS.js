@@ -2,20 +2,21 @@
 /* eslint-env mocha */
 
 import { default as ENSAuctionLib } from '../lib/ens_registrar'
-let Registrar = artifacts.require('./Registrar.sol')
-let Web3 = require('web3')
+const Registrar = artifacts.require('./Registrar.sol')
 
 contract('ENS integration', (accounts) => {
-  let registrar
-  let auctionRegistrar
+  let registrar, auctionRegistrar
 
-  before('set up auction registrar', () => {
-    registrar = Registrar.deployed()
-    auctionRegistrar = new ENSAuctionLib(
-        new Web3.providers.HttpProvider('http://testrpc:8545'),
-        registrar.address,
-        accounts[0]
-    )
+  before('set up auction registrar', (done) => {
+    Registrar.deployed().then((instance) => {
+      registrar = instance
+      auctionRegistrar = new ENSAuctionLib(
+          web3.currentProvider,
+          registrar.address,
+          accounts[0]
+      )
+      done()
+    })
   })
 
   it('demonstrates that the domain name isn\'t available', (done) => {

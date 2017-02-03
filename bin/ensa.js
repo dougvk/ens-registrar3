@@ -1,20 +1,23 @@
 #!/usr/bin/env node
 import { default as ENSAuctionLib } from '../lib/ens_registrar'
 
-let yargs = require('yargs')
-let Web3 = require('web3')
+const yargs = require('yargs')
+const Web3 = require('web3')
+
+const RPC_HOST = 'testrpc'
+const RPC_PORT = '8545'
 
 var args = yargs
   .command('winner', 'Current winner of bid', (yargs) => {
     return yargs.option('host', {
       description: 'HTTP host of Ethereum node',
       alias: 'h',
-      default: 'testrpc'
+      default: RPC_HOST
     })
     .option('port', {
       description: 'HTTP port',
       alias: 'p',
-      default: '8545'
+      default: RPC_PORT
     })
     .option('registrar', {
       description: 'The address of the registrar',
@@ -37,12 +40,12 @@ var args = yargs
     return yargs.option('host', {
       description: 'HTTP host of Ethereum node',
       alias: 'h',
-      default: 'testrpc'
+      default: RPC_HOST
     })
     .option('port', {
       description: 'HTTP port',
       alias: 'p',
-      default: '8545'
+      default: RPC_PORT
     })
     .option('registrar', {
       description: 'The address of the registrar',
@@ -75,12 +78,12 @@ var args = yargs
     return yargs.option('host', {
       description: 'HTTP host of Ethereum node',
       alias: 'h',
-      default: 'testrpc'
+      default: RPC_HOST
     })
     .option('port', {
       description: 'HTTP port',
       alias: 'p',
-      default: '8545'
+      default: RPC_PORT
     })
     .option('registrar', {
       description: 'The address of the registrar',
