@@ -3,20 +3,21 @@
 
 import { default as ENSAuctionLib } from '../lib/ens_registrar'
 const Registrar = artifacts.require('./Registrar.sol')
+const Deed = artifacts.require('./Deed.sol')
 
 contract('ENS integration', (accounts) => {
-  let registrar, auctionRegistrar
+  let auctionRegistrar
 
   before('set up auction registrar', (done) => {
     Registrar.deployed().then((instance) => {
-      registrar = instance
       auctionRegistrar = new ENSAuctionLib(
+          Registrar,
+          Deed,
+          instance.address,
           web3.currentProvider,
-          registrar.address,
           accounts[0]
       )
-      done()
-    })
+    }).then(() => done())
   })
 
   it('demonstrates that the domain name isn\'t available', (done) => {
@@ -45,7 +46,7 @@ contract('ENS integration', (accounts) => {
 
   it('can start a bid', (done) => {
     auctionRegistrar.createBid('test', accounts[0], '1.123', web3.sha3('secret'))
-      .then(() => registrar.entries(web3.sha3('test')))
+      .then(() => auctionRegistrar.entries('test'))
       .then((entry) => {
         assert.isAbove(entry[2].toNumber() * 1000, Date.now(),
                        'the end date of the bid is greater than now')
@@ -57,7 +58,7 @@ contract('ENS integration', (accounts) => {
     auctionRegistrar.createBid('test', accounts[0], '.123', web3.sha3('secret'))
       .then((bidCreated) => {
         assert.isTrue(bidCreated)
-        return registrar.entries(web3.sha3('test'))
+        return auctionRegistrar.entries('test')
       })
       .then((entry) => Promise.resolve(assert.isAbove(entry[2].toNumber() * 1000,
                                        Date.now(),

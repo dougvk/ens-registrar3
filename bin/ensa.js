@@ -1,8 +1,12 @@
 #!/usr/bin/env node
 import { default as ENSAuctionLib } from '../lib/ens_registrar'
+import { default as Web3 } from 'web3'
+import { default as yargs } from 'yargs'
+import { default as contract } from 'truffle-contract'
 
-const yargs = require('yargs')
-const Web3 = require('web3')
+const AuctionRegistrar = contract(require('../build/contracts/Registrar.json'))
+const Deed = contract(require('../build/contracts/Deed.json'))
+
 
 const RPC_HOST = 'testrpc'
 const RPC_PORT = '8545'
@@ -110,38 +114,49 @@ var args = yargs
       alias: 's',
       type: 'string'
     })
-    .demand(['account', 'max', 'secret', 'name'])
+    .demand(['account', 'registrar', 'max', 'secret', 'name'])
   })
   .help()
   .usage('Usage: $0 [command] [options]')
 
-var argv = args.argv
+let { argv } = args
 
 if (argv._.length === 0) {
   args.showHelp()
 }
 
 let command = argv._[0]
-let provider, registrar
+let registrar
+
+const initializeLib = (host, port, registrarAddress, fromAddress) => {
+  let provider = new Web3.providers.HttpProvider('http://' + host + ':' + port)
+  return new ENSAuctionLib(
+      AuctionRegistrar,
+      Deed,
+      registrarAddress,
+      provider,
+      fromAddress
+  )
+}
 
 if (command === 'bid') {
-  provider = new Web3.providers.HttpProvider('http://' + argv.host + ':' + argv.port)
-  registrar = new ENSAuctionLib(provider, argv.registrar, argv.account)
-  registrar.createBid(argv.name, argv.account, argv.max, argv.secret)
-    .then(() => console.log('Created bid for ' + argv.name))
+  let { name, host, max, port, registrar, account, secret } = argv
+  registrar = initializeLib(host, port, registrar, account)
+  registrar.createBid(name, account, max, secret)
+    .then(() => console.log('Created bid for ' + name))
 }
 
 if (command === 'reveal') {
-  provider = new Web3.providers.HttpProvider('http://' + argv.host + ':' + argv.port)
-  registrar = new ENSAuctionLib(provider, argv.registrar, argv.account)
-  registrar.revealBid(argv.name, argv.account, argv.max, argv.secret)
-    .then(() => registrar.currentWinner(argv.name))
+  let { name, host, max, port, registrar, account, secret } = argv
+  registrar = initializeLib(host, port, registrar, account)
+  registrar.revealBid(name, account, max, secret)
+    .then(() => registrar.currentWinner(name))
     .then((owner) => console.log('Revealed your bid. Current winner is account ' + owner))
 }
 
 if (command === 'winner') {
-  provider = new Web3.providers.HttpProvider('http://' + argv.host + ':' + argv.port)
-  registrar = new ENSAuctionLib(provider, argv.registrar, argv.account)
-  registrar.currentWinner(argv.name)
+  let { name, host, port, registrar, account } = argv
+  registrar = initializeLib(host, port, registrar, account)
+  registrar.currentWinner(name)
     .then((owner) => console.log('Current winner is account ' + owner))
 }

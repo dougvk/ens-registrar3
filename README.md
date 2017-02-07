@@ -31,7 +31,7 @@ Options:
 
 and once you choose a command:
 ```
-root@6021c4be18aa:/app# npm run -s ens winner
+root@6021c4be18aa:/app# npm run -s ens -- winner -n 'NewDomain'
 bin/ensa.js winner
 
 Options:
@@ -42,5 +42,5 @@ Options:
   --name, -n       The name you want to register             [string] [required]
   --account, -a    The address to register the domain name   [string] [required]
 
-Missing required arguments: account, name, registrar
+Missing required arguments: account, registrar
 ```
