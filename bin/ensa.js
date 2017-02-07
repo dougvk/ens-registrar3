@@ -1,11 +1,6 @@
 #!/usr/bin/env node
-import { default as ENSAuctionLib } from '../lib/ens_registrar'
-import { default as Web3 } from 'web3'
 import { default as yargs } from 'yargs'
-import { default as contract } from 'truffle-contract'
-
-const AuctionRegistrar = contract(require('../build/contracts/Registrar.json'))
-const Deed = contract(require('../build/contracts/Deed.json'))
+import { default as initializeLib } from '../index'
 
 const RPC_HOST = 'testrpc'
 const RPC_PORT = '8545'
@@ -125,17 +120,6 @@ if (argv._.length === 0) {
 }
 
 let command = argv._[0]
-
-const initializeLib = (host, port, registrarAddress, fromAddress) => {
-  let provider = new Web3.providers.HttpProvider('http://' + host + ':' + port)
-  return new ENSAuctionLib(
-      AuctionRegistrar,
-      Deed,
-      registrarAddress,
-      provider,
-      fromAddress
-  )
-}
 
 if (command === 'bid') {
   let { name, host, max, port, registrar, account, secret } = argv
