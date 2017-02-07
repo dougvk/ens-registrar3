@@ -7,7 +7,6 @@ import { default as contract } from 'truffle-contract'
 const AuctionRegistrar = contract(require('../build/contracts/Registrar.json'))
 const Deed = contract(require('../build/contracts/Deed.json'))
 
-
 const RPC_HOST = 'testrpc'
 const RPC_PORT = '8545'
 
@@ -126,7 +125,6 @@ if (argv._.length === 0) {
 }
 
 let command = argv._[0]
-let registrar
 
 const initializeLib = (host, port, registrarAddress, fromAddress) => {
   let provider = new Web3.providers.HttpProvider('http://' + host + ':' + port)
@@ -141,22 +139,22 @@ const initializeLib = (host, port, registrarAddress, fromAddress) => {
 
 if (command === 'bid') {
   let { name, host, max, port, registrar, account, secret } = argv
-  registrar = initializeLib(host, port, registrar, account)
-  registrar.createBid(name, account, max, secret)
+  let auctionRegistrar = initializeLib(host, port, registrar, account)
+  auctionRegistrar.createBid(name, account, max, secret)
     .then(() => console.log('Created bid for ' + name))
 }
 
 if (command === 'reveal') {
   let { name, host, max, port, registrar, account, secret } = argv
-  registrar = initializeLib(host, port, registrar, account)
-  registrar.revealBid(name, account, max, secret)
+  let auctionRegistrar = initializeLib(host, port, registrar, account)
+  auctionRegistrar.revealBid(name, account, max, secret)
     .then(() => registrar.currentWinner(name))
     .then((owner) => console.log('Revealed your bid. Current winner is account ' + owner))
 }
 
 if (command === 'winner') {
   let { name, host, port, registrar, account } = argv
-  registrar = initializeLib(host, port, registrar, account)
-  registrar.currentWinner(name)
+  let auctionRegistrar = initializeLib(host, port, registrar, account)
+  auctionRegistrar.currentWinner(name)
     .then((owner) => console.log('Current winner is account ' + owner))
 }
