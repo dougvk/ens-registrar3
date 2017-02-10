@@ -1,4 +1,4 @@
-# ens-registrar3
+# [Tutorial here!](http://truffleframework.com/tutorials/creating-a-cli-with-truffle-3)
 
 ## In order to build and run the library *LOCALLY*, run
 1. `yarn install` or `npm install` depending on your preference
