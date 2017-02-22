@@ -1,20 +1,12 @@
-version: '2'
+version: '3'
 services:
   testrpc:
-    image: dougvk/mydapp_testrpc
+    image: dougvk/testrpc:latest
     command: bash -c "testrpc -h 0.0.0.0"
-  truffle3_ens:
+  truffle3:
     image: dougvk/truffle3:latest
     command: bash
     stdin_open: true
     tty: true
-    volumes_from:
-      - truffle3_ens_vol
-  truffle3_ens_vol:
-    image: busybox
-    container_name: truffle3_ens_vol
     volumes:
       - ../:/app
-
-volumes:
-  truffle3_ens_vol:
